@@ -3,7 +3,7 @@
 
     Version     1.0.0
     Author      Mike Brady
-    Website     www.mikebrady.com/programming/spectogram/
+    Website     www.mikebrady.com/programming/spectrogram/
 
     BASIC HTML
         INSIDE <head> TAG
