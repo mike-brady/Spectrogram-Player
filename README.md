@@ -1,7 +1,7 @@
 # Spectrogram-Player
 A web based media player for synchronized playback of an audio file and its spectrogram.
 
-http://www.mikebrady.com/programming/spectrogram/
+www.mikebrady.com/programming/spectrogram/
 
 ## Getting Started
 ### Link to the CSS file
