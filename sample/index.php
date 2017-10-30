@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Spectrogram Player Sample</title>
+  <link rel="stylesheet" type="text/css" href="../spectrogramplayer.css" />
+  <style>
+    body { font-family: sans-serif; }
+  </style>
+</head>
+<body onLoad="sp_init();">
+
+  <script type="text/javascript" src="../spectrogramplayer.js"></script>
+
+  <div class="spectrogram-player" data-width="600" data-height="200" data-freq-min="0" data-freq-max="20">
+    <img src="Eastern-Kingbird-spectrogram.png" />
+    <audio controls controlsList="nodownload">
+      <source src="Eastern-Kingbird.wav" type="audio/wav">
+    </audio>
+  </div>
+  <b>Eastern Kingbird Call</b><br />
+  <span style="font-size:12px">Recorded: July 16, 2017<br />
+  &copy; <a href="https://ebird.org/media/catalog?userId=USER933613&mediaType=Audio,Photo,Video&searchField=user&includeUnconfirmed=true&sort=upload_date_desc">Mike Brady</a></span>
+</body>
+</html>
