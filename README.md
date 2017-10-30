@@ -38,6 +38,13 @@ To change the settings in HTML add a "data-[setting-name]" attribute to the pare
 
 ### Custom Settings in JavaScript
 To change the settings in JavaScript, adjust the values of variables at the top of the function sp_init().
+```
+function sp_init() {
+  defaultWidth = 300;
+  defaultHeight = 150;
+  ...
+}
+```
 
 ### Settings
 |Setting|HTML Attribute Name|Description
