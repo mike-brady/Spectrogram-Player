@@ -9,7 +9,7 @@ A web based media player for synchronized playback of an audio file and its spec
 ```
 <script type="text/javascript" src="spectrogramplayer.js"></script>
 ```
-### Set Spectrogram Player to Initialize after the page loads
+### Set Spectrogram Player to initialize after the page loads
 ```
 <body onload="sp_init();">
 ```
