@@ -77,7 +77,7 @@ Custom Settings
                                                     0, 2.14.., 4.29.., 6.43.., 8.57.., 10.71.., 12.86.., 15
 
                                                     With smoothing turned on and set to 1, the frequency
-                                                    will be divided into 6 increments instead resulting
+                                                    will be divided into 6 increments instead, resulting
                                                     in the following increments: 0, 2.5, 5, 7.5, 10, 12.5, 15
 
                                                     The smoothing value determines how much higher/lower
