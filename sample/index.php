@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Spectrogram Player Sample</title>
-  <link rel="stylesheet" type="text/css" href="../spectrogramplayer.css" />
+  <link rel="stylesheet" type="text/css" href="../style.css" />
   <style>
     body { font-family: sans-serif; }
   </style>
 </head>
 <body onLoad="sp_init();">
 
-  <script type="text/javascript" src="../spectrogramplayer.js"></script>
+  <script type="text/javascript" src="../spectrogram-player.js"></script>
 
   <div class="spectrogram-player" data-width="600" data-height="200" data-freq-min="0" data-freq-max="20">
     <img src="Eastern-Kingbird-spectrogram.png" />
