@@ -2,12 +2,24 @@
 A web based media player for synchronized playback of an audio file and its spectrogram.
 
 ## Getting Started
-### Link to the Javascript file and CSS file inside the \<head\> element
+
+### Requirements
+To create a spectrogram player, you will need an audio file and an image file of its spectrogram. Spectrogram Player cannot create spectrograms automically from audio files. Fortunately, there are a variety of free websites and programs that will make it easy to create a spectrogram. A few good options are listed below.<br />
+<br />
+<b>Online Tools:</b><br />
+<a href="http://convert.ing-now.com/audio-spectrogram-creator/">convert.ing-now.com/audio-spectrogram-creator</a><br />
+<br />
+<b>Free Programs:</b><br />
+<a href="https://www.audacityteam.org/">Audacity</a> (<a href="https://manual.audacityteam.org/man/spectrogram_view.html">Spectrogram View in Audacity</a>)
+
+### Adding Dependencies
+In the \<head\> tag of the page you wish to add a spectrogram player to, add the following lines.
 ```
 <link rel="stylesheet" type="text/css" href="spectrogram-player/style.css" />
 <script type="text/javascript" src="spectrogram-player/spectrogram-player.js"></script>
 ```
-### Add a player
+### Creating a Spectrogram Player
+To create a player, all you need to do is to create a \<div\> element with the class name "spectrogram-player". Then, add an \<img\> element and \<audio\> element inside the \<div\>, linking to the spectrogram image and audio file respectively. And that's it! Multiple spectrogram players can also be added on a single page.
 ```
 <div class="spectrogram-player">
   <img src="[pathToSpectrogramImage]" />
@@ -17,9 +29,9 @@ A web based media player for synchronized playback of an audio file and its spec
 </div>
 ```
 ## Custom Settings
-The following settings can be customized to change the look and behavior of the Spectrogram Player. There are two ways to change the settings. You can set them in HTML or change them in JavaScript. Setting values in HTML only apply to the individual instance of the player. Setting the values in JavaScript apply to all players. HTML settings override JavaScript settings.
+The following settings can be customized to change the look and behavior of the Spectrogram Player. There are two ways to change the settings. You can set them in HTML or change them in JavaScript. Setting values in HTML only apply to the individual instance of the player. Setting the values in JavaScript apply to all players. In the case of HTML and JavaScript settings being set at the same time, HTML settings will override JavaScript settings for each individual player.
 
-### Custom settings on a per player basis
+### Custom Settings on a Per Player Basis
 To change the settings for a specific player, add a "data-[setting-name]" attribute to the parent \<div\> of the player with desired setting value as the value of the attribute.
 ```
 <div class="spectrogram-player" data-width="300" data-height="150">
@@ -27,15 +39,12 @@ To change the settings for a specific player, add a "data-[setting-name]" attrib
 </div>
 ```
 
-### Default settings for all players
+### Default Settings For All Players
 To change the default settings for all players, adjust the values of default variables inside spectrogram-players.js.
 ```
 defaultWidth: 300,
 defaultHeight: 150,
 ```
-
-### Using custom settings and default settings at the same time
-Custom settings in the HTML will override the default settings for that specific player.
 
 ### Settings
 |Setting|HTML Attribute Name|Description
