@@ -1,4 +1,6 @@
 # Spectrogram-Player
+![Spectrogram Player](http://www.mikebrady.com/programming/spectrogram/spectrogram-player.gif)
+
 A web based media player for synchronized playback of an audio file and its spectrogram.
 
 ## Getting Started
