@@ -3,6 +3,9 @@
 
 A web based media player for synchronized playback of an audio file and its spectrogram.
 
+## Demo
+[![See demo here](https://github-production-user-asset-6210df.s3.amazonaws.com/33209281/258672067-80637f0c-f993-4510-bba0-c9a9899f71ca.png)](https://mike-brady.github.io/demos/spectrogram-player/index.html)
+
 ## Getting Started
 
 ### Requirements
