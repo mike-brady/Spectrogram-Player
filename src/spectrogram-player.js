@@ -3,7 +3,7 @@
 
   Author: Mike Brady
 
-  Version: 2.0.0
+  Version: 2.1.0
 
   Description:
     Spectrogram Player is a custom media player for synchronizing playback of
