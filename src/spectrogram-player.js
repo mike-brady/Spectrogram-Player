@@ -172,6 +172,9 @@ const spectrogram_player = {
       audio.addEventListener('play', function () {
         spectrogram_player.startPlayer(i);
       })
+      audio.addEventListener('seeking', function () {
+        spectrogram_player.positionSpectrogram(i);
+      })
       audio.addEventListener('pause', function () {
         spectrogram_player.stopPlayer(i);
       })
