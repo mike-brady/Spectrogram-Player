@@ -69,7 +69,7 @@ Custom Settings
     axisSmoothing       data-axis-smoothing         The amount of smoothing to apply to the axis
 
                                                     Smoothing attempts to divide the frequency range
-                                                    into increments that are mutliples of .25
+                                                    into increments that are multiples of .25
 
                                                     Example: A frequency range of 0 - 15kHz divided
                                                     into 7 increments would result in the following
@@ -87,7 +87,7 @@ Custom Settings
                                                     A smoothing value of 0 will apply no smoothing.
 */
 
-var spectrogram_player = {
+const spectrogram_player = {
   defaultWidth: 500,
   defaultHeight: 200,
   defaultFreqMin: 0,
@@ -96,119 +96,141 @@ var spectrogram_player = {
   defaultAxisDivisionHeight: 40,
   defaultAxisSmoothing: 2,
 
-  playerIDs: [],
+  players: {},
 
-  init: function() {
-    players = document.getElementsByClassName("spectrogram-player");
-    for(i=0;i<players.length;i++) {
-      player = players[i];
+  init: function () {
+    let players = document.getElementsByClassName('spectrogram-player');
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
 
-      imgElms = player.getElementsByTagName("img");
-      if(imgElms.length == 0) {
+      const imgElms = player.getElementsByTagName('img');
+      if (imgElms.length === 0) {
         console.log('Spectrogram Player: Missing image element');
         continue;
-      } else if(imgElms.length > 1) {
+      } else if (imgElms.length > 1) {
         console.log('Spectrogram Player: Found multiple images in player. First image element is assumed to be the spectrogram.')
       }
+      const img = imgElms[0];
 
-      audioElms = player.getElementsByTagName("audio");
-      if(audioElms.length == 0) {
+      const audioElms = player.getElementsByTagName('audio');
+      if (audioElms.length === 0) {
         console.log('Spectrogram Player: Missing audio element');
         continue;
-      } else if(audioElms.length != 1) {
+      } else if (audioElms.length !== 1) {
         console.log('Spectrogram Player: Found multiple audio elements in player. First audio element is assumed to be the audio file.')
       }
+      const audio = audioElms[0];
 
-      width = (player.getAttribute('data-width')) ? player.getAttribute('data-width') : this.defaultWidth;
-      height = (player.getAttribute('data-height')) ? player.getAttribute('data-height') : this.defaultHeight;
-      freqMin = (player.getAttribute('data-freq-min')) ? player.getAttribute('data-freq-min') : this.defaultFreqMin;
-      freqMax = (player.getAttribute('data-freq-max')) ? player.getAttribute('data-freq-max') : this.defaultFreqMax;
-      axisWidth = (player.getAttribute('data-axis-width')) ? player.getAttribute('data-axis-width') : this.defaultAxisWidth;
-      axisDivisionHeight = (player.getAttribute('data-axis-division-height')) ? player.getAttribute('data-axis-division-height') : this.defaultAxisDivisionHeight;
-      axisSmoothing = (player.getAttribute('data-axis-smoothing')) ? player.getAttribute('data-axis-smoothing') : this.defaultAxisSmoothing;
+      const width = (player.getAttribute('data-width')) ? player.getAttribute('data-width') : this.defaultWidth;
+      const height = (player.getAttribute('data-height')) ? player.getAttribute('data-height') : this.defaultHeight;
+      const freqMin = (player.getAttribute('data-freq-min')) ? player.getAttribute('data-freq-min') : this.defaultFreqMin;
+      const freqMax = (player.getAttribute('data-freq-max')) ? player.getAttribute('data-freq-max') : this.defaultFreqMax;
+      const axisWidth = (player.getAttribute('data-axis-width')) ? player.getAttribute('data-axis-width') : this.defaultAxisWidth;
+      const axisDivisionHeight = (player.getAttribute('data-axis-division-height')) ? player.getAttribute('data-axis-division-height') : this.defaultAxisDivisionHeight;
+      const axisSmoothing = (player.getAttribute('data-axis-smoothing')) ? player.getAttribute('data-axis-smoothing') : this.defaultAxisSmoothing;
 
-      spectrogram = imgElms[0].src;
-      imgElms[0].parentNode.removeChild(imgElms[0]);
-
-      audio = audioElms[0];
-      audio.id = "sp-audio"+i;
-      audio.style.width = width+"px";
+      audio.style.width = width + 'px';
 
       //Create viewer element
-      viewer = document.createElement('div');
-      viewer.className = "sp-viewer";
-      viewer.id = "sp-viewer"+i;
+      const viewer = document.createElement('div');
+      viewer.className = 'sp-viewer';
 
-      viewer.style.width = width+"px";
-      viewer.style.height = height+"px";
+      viewer.style.width = width + 'px';
+      viewer.style.height = height + 'px';
 
-      viewer.style.backgroundImage = "url('"+spectrogram+"')";
-      viewer.style.backgroundPosition = width/2+"px";
-      viewer.style.backgroundSize = "auto "+height+"px";
+      viewer.style.backgroundImage = `url('${img.src}')`;
+      viewer.style.backgroundPosition = width / 2 + 'px';
+      viewer.style.backgroundSize = 'auto ' + height + 'px';
 
-      if(axisWidth > 0) {
-        divisions = Math.floor(height/axisDivisionHeight);
-        if(axisSmoothing != 0)
-          divisions = this.smoothAxis(freqMax-freqMin, divisions, [0,.5,.25], axisSmoothing);
+      if (axisWidth > 0) {
+        let divisions = Math.floor(height / axisDivisionHeight);
+        if (axisSmoothing !== 0)
+          divisions = this.smoothAxis(freqMax - freqMin, divisions, [0, .5, .25], axisSmoothing);
 
-        axis = this.drawAxis(axisWidth,height,freqMin,freqMax,divisions,"kHz");
-        axis.className = "sp-axis";
+        const axis = this.drawAxis(axisWidth, height, freqMin, freqMax, divisions, 'kHz');
+        axis.className = 'sp-axis';
         viewer.appendChild(axis);
       }
 
-      timeBar = document.createElement('div');
-      timeBar.className = "sp-timeBar";
+      const timeBar = document.createElement('div');
+      timeBar.className = 'sp-timeBar';
       viewer.appendChild(timeBar);
 
       player.insertBefore(viewer, player.firstChild);
 
-      this.playerIDs.push(i);
-    }
+      this.players[i] = {
+        'viewer': viewer,
+        'audio': audio,
+        'interval': null,
+        'spectrogram': {
+          'original_width': img.width,
+          'original_height': img.height
+        }
+      }
+      imgElms[0].parentNode.removeChild(imgElms[0]);
 
-    setInterval(function() { spectrogram_player.moveSpectrograms(); },33);
-  },
-
-  moveSpectrograms: function() {
-    for(i=0;i<this.playerIDs.length;i++) {
-      id = this.playerIDs[i];
-      audio = document.getElementById("sp-audio"+id);
-      if(audio.paused)
-        continue;
-
-      viewer = document.getElementById("sp-viewer"+id);
-      viewerWidth = viewer.offsetWidth;
-      duration = audio.duration;
-
-      viewerStyle = viewer.currentStyle || window.getComputedStyle(viewer, false);
-      img = new Image();
-      //remove url(" and ") from backgroundImage string
-      img.src = viewerStyle.backgroundImage.replace(/url\(\"|\"\)$/ig, '');
-      //get the width of the spectrogram image based on its scaled size * its native size
-      spectWidth = viewer.offsetHeight/img.height*img.width;
-
-      viewer.style.backgroundPosition = viewerWidth/2 - audio.currentTime/duration*spectWidth + "px";
+      audio.addEventListener('play', function () {
+        spectrogram_player.startPlayer(i);
+      })
+      audio.addEventListener('pause', function () {
+        spectrogram_player.stopPlayer(i);
+      })
     }
   },
 
-  smoothAxis: function(range, baseDivision, allowedDecimals, distance) {
-    if(distance==0)
+  startPlayer: function (player_id) {
+    let player = this.players[player_id];
+    if (player.interval === null) {
+      this.players[player_id]['interval'] = setInterval(
+          function () {
+            spectrogram_player.positionSpectrogram(player_id)
+          },
+          33
+      );
+    }
+  },
+
+  stopPlayer: function (player_id) {
+    let player = this.players[player_id];
+    if (player.interval !== null) {
+      clearInterval(player.interval);
+      player.interval = null;
+    }
+  },
+
+  positionSpectrogram: function (player_id) {
+    let player = this.players[player_id];
+    let viewer = player.viewer;
+    let audio = player.audio;
+    let spectrogram = player.spectrogram
+
+    const viewerWidth = viewer.offsetWidth;
+    const duration = audio.duration;
+    const spectWidth = viewer.offsetHeight / spectrogram.original_height * spectrogram.original_width;
+
+    viewer.style.backgroundPosition = viewerWidth / 2 - audio.currentTime / duration * spectWidth + 'px';
+  },
+
+  smoothAxis: function (range, baseDivision, allowedDecimals, distance) {
+    if(distance === 0)
       return baseDivision;
 
-    subtractFirst = (distance<0) ? false : true;
+    let subtractFirst = (distance >= 0);
 
-    for(var i=0;i<=distance;i++) {
-      d1 = (subtractFirst) ? baseDivision-i : baseDivision+i;
-      d2 = (subtractFirst) ? baseDivision+i : baseDivision-i;
+    for(let i = 0; i <= distance; i++) {
+      let d1 = (subtractFirst) ? baseDivision - i : baseDivision + i;
+      let d2 = (subtractFirst) ? baseDivision + i : baseDivision - i;
+      let decimal;
 
       if(d1 > 0) {
-        decimal = this.qoutientDecimal(range, d1, 4)
-        if(allowedDecimals.indexOf(decimal) > -1)
+        decimal = this.quotientDecimal(range, d1, 4)
+        if (allowedDecimals.indexOf(decimal) > -1)
           return d1;
       }
 
       if(d2 > 0) {
-        decimal = this.qoutientDecimal(range, d2, 4)
-        if(allowedDecimals.indexOf(decimal) > -1)
+        decimal = this.quotientDecimal(range, d2, 4)
+        if (allowedDecimals.indexOf(decimal) > -1)
           return d2;
       }
     }
@@ -216,50 +238,51 @@ var spectrogram_player = {
     return baseDivision;
   },
 
-  drawAxis: function(width,height,min,max,divisions,unit) {
-    axis = document.createElement('canvas');
+  drawAxis: function (width, height, min, max, divisions, unit) {
+    let axis = document.createElement('canvas');
     axis.width = width;
     axis.height = height;
 
-    ctx = axis.getContext("2d");
+    let ctx = axis.getContext('2d');
 
-    ctx.fillStyle ="rgba(0,0,0,.1)";
-    ctx.fillRect(0,0,width,height);
+    ctx.fillStyle = 'rgba(0,0,0,.1)';
+    ctx.fillRect(0, 0, width, height);
 
-    ctx.font = "12px Arial";
-    ctx.textAlign = "right";
-    ctx.textBaseline = "top";
-    ctx.fillStyle ="rgb(100,100,100)";
-    ctx.strokeStyle ="rgb(100,100,100)";
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = 'rgb(100,100,100)';
+    ctx.strokeStyle = 'rgb(100,100,100)';
 
-    range = max-min;
+    let range = max - min;
 
-    for(var i=0;i<divisions;i++) {
-      y = Math.round(height/divisions*i);
-      ctx.moveTo(0,y+.5);
-      ctx.lineTo(width,y+.5);
+    for (let i = 0; i < divisions; i++) {
+      let y = Math.round(height / divisions * i);
+      ctx.moveTo(0, y + .5);
+      ctx.lineTo(width, y + .5);
       ctx.stroke();
 
-      curVal = (divisions-i) * range/divisions + min*1;
+      let curVal = (divisions - i) * range / divisions + min * 1;
 
-      ctx.fillText(Math.round(curVal*100)/100,width,y);
+      ctx.fillText(String(Math.round(curVal * 100) / 100), width, y);
     }
 
-    ctx.textBaseline = "bottom";
-    ctx.fillText(unit,width,height);
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(unit, width, height);
 
     return axis;
   },
 
-  qoutientDecimal: function(dividend, divisor, precision) {
-    quotient = dividend/divisor;
+  quotientDecimal: function (dividend, divisor, precision) {
+    let quotient = dividend / divisor;
+    let b;
 
-    if(precision === undefined)
+    if (precision === undefined)
       b = 1;
     else
-      b = Math.pow(10,precision);
+      b = Math.pow(10, precision);
 
-    return Math.round(quotient%1 *b)/b;
+    return Math.round(quotient % 1 * b) / b;
   }
 };
 
