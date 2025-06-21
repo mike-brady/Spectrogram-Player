@@ -105,19 +105,19 @@ const spectrogram_player = {
 
       const imgElms = player.getElementsByTagName('img');
       if (imgElms.length === 0) {
-        console.log('Spectrogram Player: Missing image element');
+        this.log('Missing image element');
         continue;
       } else if (imgElms.length > 1) {
-        console.log('Spectrogram Player: Found multiple images in player. First image element is assumed to be the spectrogram.')
+        this.log('Found multiple images in player. First image element is assumed to be the spectrogram.')
       }
       const img = imgElms[0];
 
       const audioElms = player.getElementsByTagName('audio');
       if (audioElms.length === 0) {
-        console.log('Spectrogram Player: Missing audio element');
+        this.log('Missing audio element');
         continue;
       } else if (audioElms.length !== 1) {
-        console.log('Spectrogram Player: Found multiple audio elements in player. First audio element is assumed to be the audio file.')
+        this.log('Found multiple audio elements in player. First audio element is assumed to be the audio file.')
       }
       const audio = audioElms[0];
 
@@ -179,6 +179,10 @@ const spectrogram_player = {
         spectrogram_player.stopPlayer(i);
       })
     }
+  },
+
+  log: function(message) {
+    console.log(`[Spectrogram Player] ${message}`)
   },
 
   startPlayer: function (player_id) {
